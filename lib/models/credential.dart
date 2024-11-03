@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-class Credentials {
+class Credential {
   final int id;
   final String title;
   final String email;
   final String password;
-  Credentials({
+  Credential({
     required this.id,
     required this.title,
     required this.email,
     required this.password,
   });
 
-  Credentials copyWith({
+  Credential copyWith({
     int? id,
     String? title,
     String? email,
     String? password,
   }) {
-    return Credentials(
+    return Credential(
       id: id ?? this.id,
       title: title ?? this.title,
       email: email ?? this.email,
@@ -35,8 +35,8 @@ class Credentials {
     };
   }
 
-  factory Credentials.fromMap(Map<String, dynamic> map) {
-    return Credentials(
+  factory Credential.fromMap(Map<String, dynamic> map) {
+    return Credential(
       id: map['id'] as int,
       title: map['title'] as String,
       email: map['email'] as String,
@@ -46,16 +46,16 @@ class Credentials {
 
   String toJson() => json.encode(toMap());
 
-  factory Credentials.fromJson(String source) =>
-      Credentials.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Credential.fromJson(String source) =>
+      Credential.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'Credentials(id: $id, title: $title, email: $email, password: $password)';
+    return 'Credential(id: $id, title: $title, email: $email, password: $password)';
   }
 
   @override
-  bool operator ==(covariant Credentials other) {
+  bool operator ==(covariant Credential other) {
     if (identical(this, other)) return true;
 
     return other.id == id &&
@@ -68,4 +68,11 @@ class Credentials {
   int get hashCode {
     return id.hashCode ^ title.hashCode ^ email.hashCode ^ password.hashCode;
   }
+
+  factory Credential.fromSqflitedatabase(Map<String, dynamic> map) =>
+      Credential(
+          id: map['id']?.toInt() ?? 0,
+          title: map['title'] ?? '',
+          email: map['email'] ?? '',
+          password: map['password'] ?? '');
 }
