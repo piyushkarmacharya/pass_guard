@@ -69,7 +69,7 @@ class Credential {
     return id.hashCode ^ title.hashCode ^ email.hashCode ^ password.hashCode;
   }
 
-  factory Credential.fromSqflitedatabase(Map<String, dynamic> map) =>
+  factory Credential.fromSqfliteDatabase(Map<String, dynamic> map) =>
       Credential(
           id: map['id']?.toInt() ?? 0,
           title: map['title'] ?? '',
