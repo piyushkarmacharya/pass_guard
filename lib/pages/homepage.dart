@@ -65,11 +65,10 @@ class _HomePageState extends State<HomePage> {
                     "Welcome back",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontFamily: "DMSans",
                         fontWeight: FontWeight.w700,
-                        fontSize: 10,
+                        fontSize: 14,
                         height: 13.02 / 10,
-                        color: Color(0xFFFCFCFF)),
+                        color: Colors.white),
                   ),
                   Text(
                     "User",
@@ -77,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                         fontFamily: "DMSans",
                         fontWeight: FontWeight.w700,
-                        fontSize: 14,
+                        fontSize: 16,
                         height: 18.23 / 14,
                         color: Color(0xFFFCFCFF)),
                   ),
@@ -246,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   final credential = credentials[index];
                   return Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -255,16 +254,42 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Column(
-                              children: [
-                                Text(credential.title),
-                                Text(credential.email),
-                                Text(credential.password),
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      credential.title,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Email : ${credential.email}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Password : ${credential.password}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(
-                            width: 0.1 * screenSize.width,
+                            width: 0.11 * screenSize.width,
                             child: Center(
                               child: IconButton(
                                   onPressed: () {
@@ -272,6 +297,9 @@ class _HomePageState extends State<HomePage> {
                                         context: context,
                                         builder: (context) {
                                           return AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16)),
                                             backgroundColor: Colors.grey,
                                             title: Text(
                                                 "Delete credentials for ${credential.title}?",
