@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 0,
@@ -235,15 +236,93 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}"); // Show error message
+              return Center(
+                  child:
+                      Text("Error: ${snapshot.error}")); // Show error message
             } else if (snapshot.hasData) {
               final credentials = snapshot.data!;
               return ListView.builder(
                 itemCount: credentials.length,
                 itemBuilder: (context, index) {
                   final credential = credentials[index];
-                  return ListTile(
-                    title: Text(credential.toString()), // Customize as needed
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      color: Colors.grey,
+                      elevation: 10,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(credential.title),
+                                Text(credential.email),
+                                Text(credential.password),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 0.1 * screenSize.width,
+                            child: Center(
+                              child: IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            backgroundColor: Colors.grey,
+                                            title: Text(
+                                                "Delete credentials for ${credential.title}?",
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 18,
+                                                    height: 28 / 18)),
+                                            contentPadding: EdgeInsets.zero,
+                                            buttonPadding: EdgeInsets.zero,
+                                            actionsPadding:
+                                                const EdgeInsets.all(8),
+                                            titlePadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    24, 20, 20, 0),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, false),
+                                                  child: const Text(
+                                                    "No",
+                                                    style: TextStyle(
+                                                        color: Colors.black),
+                                                  )),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                    passGuardDb
+                                                        .delete(credential.id);
+                                                    fetchCredentials();
+                                                  },
+                                                  child: Text(
+                                                    "Yes",
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .red.shade900),
+                                                  )),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red.shade900,
+                                  )),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   );
                 },
               );

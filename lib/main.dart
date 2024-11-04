@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             titleTextStyle:
                 TextStyle(color: Color(0xFFFFFFFF), fontFamily: "DMSans")),
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
