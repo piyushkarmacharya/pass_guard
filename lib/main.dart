@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pass_guard/pages/homepage.dart';
+import 'package:pass_guard/pages/login_page.dart';
+import 'package:pass_guard/pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Pass Guard",
       theme: ThemeData(
-        primaryColor: Colors.blueGrey,
-        scaffoldBackgroundColor: Colors.blueGrey,
+        primaryColor: Colors.blueGrey.shade700,
+        scaffoldBackgroundColor: Colors.blueGrey.shade700,
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
             backgroundColor: Colors.blueGrey,
@@ -24,7 +26,11 @@ class MyApp extends StatelessWidget {
             titleTextStyle:
                 TextStyle(color: Color(0xFFFFFFFF), fontFamily: "DMSans")),
       ),
-      home: const HomePage(),
+      initialRoute: LoginPage.routeName,
+      routes: {
+        LoginPage.routeName: (context) => const LoginPage(),
+        HomePage.routeName: (context) => const HomePage(),
+      },
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:pass_guard/database/pass_guard_db.dart';
 import 'package:pass_guard/models/credential.dart';
 
 class HomePage extends StatefulWidget {
+  static const routeName = "/home-page";
   const HomePage({super.key});
 
   @override
