@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:pass_guard/database/user_table.dart';
+import 'package:pass_guard/models/user.dart';
 import 'package:pass_guard/pages/homepage.dart';
 
 class LoginForm extends StatefulWidget {
@@ -20,6 +22,8 @@ class _LoginFormState extends State<LoginForm> {
     ),
     borderRadius: BorderRadius.all(Radius.circular(10)),
   );
+
+  bool loading = false;
 
   //for biometrics
   final LocalAuthentication auth = LocalAuthentication();
@@ -258,16 +262,49 @@ class _LoginFormState extends State<LoginForm> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           backgroundColor: Colors.blueGrey.shade700),
-                      onPressed: () async {},
-                      child: const Text(
-                        "Sign In",
-                        style: TextStyle(
-                          fontFamily: "DMSans",
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFFFFFFFF),
-                          height: 18.23 / 14,
-                        ),
-                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            loading = true;
+                          });
+                          List<User> users = await UserTable().fetchAll();
+                          User user = users[users.length - 1];
+                          if (emailCtr.text == user.email &&
+                              passwordCtr.text == user.password) {
+                            setState(() {
+                              loading = false;
+                            });
+                            Navigator.of(context)
+                                .pushReplacementNamed(HomePage.routeName);
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("Welcome ${emailCtr.text}")));
+                          } else {
+                            setState(() {
+                              loading = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Invalid credentials")));
+                          }
+                        }
+                      },
+                      child: loading
+                          ? const SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              "Sign in",
+                              style: TextStyle(
+                                fontFamily: "DMSans",
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFFFFFFFF),
+                                height: 18.23 / 14,
+                              ),
+                            ),
                     ),
                   ),
                 ),

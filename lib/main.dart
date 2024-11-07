@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             titleTextStyle:
                 TextStyle(color: Color(0xFFFFFFFF), fontFamily: "DMSans")),
       ),
-      initialRoute: HomePage.routeName,
+      initialRoute: LoginPage.routeName,
       routes: {
         LoginPage.routeName: (context) => const LoginPage(),
         HomePage.routeName: (context) => const HomePage(),

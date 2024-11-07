@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import "package:pass_guard/database/user_table.dart";
 import "package:pass_guard/models/user.dart";
+import "package:pass_guard/services/secure_storage.dart";
 
 class SignupForm extends StatefulWidget {
-  const SignupForm({super.key});
+  final Function onSignup;
+  const SignupForm({super.key, required this.onSignup});
 
   @override
   State<SignupForm> createState() => _SignupFormState();
@@ -25,6 +27,8 @@ class _SignupFormState extends State<SignupForm> {
         .create(email: emailCtr.text, password: passwordCtr.text);
     return temp;
   }
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -170,12 +174,25 @@ class _SignupFormState extends State<SignupForm> {
                               borderRadius: BorderRadius.circular(10)),
                           backgroundColor: Colors.blueGrey.shade700),
                       onPressed: () async {
+                        setState(() {});
                         if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            loading = true;
+                          });
                           if (await signup() > 0) {
+                            setState(() {
+                              loading = false;
+                            });
+                            await SecureStorage().store("signup", "done");
+                            widget.onSignup();
+
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text("Signup successful")));
                           } else {
+                            setState(() {
+                              loading = false;
+                            });
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text("Try again later")));
@@ -184,15 +201,23 @@ class _SignupFormState extends State<SignupForm> {
                           debugPrint(temp.toString());
                         }
                       },
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          fontFamily: "DMSans",
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFFFFFFFF),
-                          height: 18.23 / 14,
-                        ),
-                      ),
+                      child: loading
+                          ? const SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                fontFamily: "DMSans",
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFFFFFFFF),
+                                height: 18.23 / 14,
+                              ),
+                            ),
                     ),
                   ),
                 ),

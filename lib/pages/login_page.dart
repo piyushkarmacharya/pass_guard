@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pass_guard/constants/strings.dart';
+import 'package:pass_guard/services/secure_storage.dart';
 import 'package:pass_guard/widgets/footer.dart';
+import 'package:pass_guard/widgets/login_form.dart';
 import 'package:pass_guard/widgets/my_painter.dart';
 import 'package:pass_guard/widgets/signup_form.dart';
 
@@ -13,6 +15,27 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool signup = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeSignupStatus();
+  }
+
+  Future<void> _initializeSignupStatus() async {
+    bool temp = (await SecureStorage().read("signup")) == "done" ? false : true;
+    setState(() {
+      signup = temp;
+    });
+  }
+
+  void _changeSignup() {
+    setState(() {
+      signup = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -100,7 +123,11 @@ class _LoginPageState extends State<LoginPage> {
                           vertical: 32.0, horizontal: 22.0),
                       child: Column(
                         children: [
-                          const SignupForm(),
+                          signup
+                              ? SignupForm(
+                                  onSignup: _changeSignup,
+                                )
+                              : const LoginForm(),
                           if (keyboardActive == 0.0)
                             Footer(screenSize: screenSize)
                         ],
