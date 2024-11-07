@@ -1,4 +1,4 @@
-import 'package:pass_guard/database/pass_guard_db.dart';
+import 'package:pass_guard/database/credentials_table.dart';
 import "package:sqflite/sqflite.dart";
 import 'package:path/path.dart';
 

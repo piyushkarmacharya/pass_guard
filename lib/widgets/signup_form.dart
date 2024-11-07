@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "package:pass_guard/database/user_table.dart";
+import "package:pass_guard/models/user.dart";
 
 class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
@@ -18,10 +20,17 @@ class _SignupFormState extends State<SignupForm> {
     borderRadius: BorderRadius.all(Radius.circular(10)),
   );
 
+  Future<int> signup() async {
+    int temp = await UserTable()
+        .create(email: emailCtr.text, password: passwordCtr.text);
+    return temp;
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final screenSize = mediaQuery.size;
+
     return Form(
       autovalidateMode: AutovalidateMode.always,
       key: _formKey,
@@ -100,7 +109,42 @@ class _SignupFormState extends State<SignupForm> {
                 color: Colors.blueGrey,
               ),
               label: const Text(
-                "Password",
+                "Confirm Password",
+                style: TextStyle(
+                    color: Color(0xFFABA8B1),
+                    fontFamily: "DMSans",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    height: 18.23 / 14),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 0.015 * screenSize.height,
+          ),
+          TextFormField(
+            obscureText: true,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Confirm the password";
+              } else if (value != passwordCtr.text) {
+                return "Confirm password and password must be same";
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              enabledBorder: borderStyle,
+              focusedBorder: borderStyle,
+              border: borderStyle,
+              filled: true,
+              fillColor: const Color(0xFFFFFFFF),
+              prefixIcon: const Icon(
+                Icons.lock_outline,
+                size: 20,
+                color: Colors.blueGrey,
+              ),
+              label: const Text(
+                "Confirm Password",
                 style: TextStyle(
                     color: Color(0xFFABA8B1),
                     fontFamily: "DMSans",
@@ -125,9 +169,23 @@ class _SignupFormState extends State<SignupForm> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           backgroundColor: Colors.blueGrey.shade700),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (await signup() > 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Signup successful")));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Try again later")));
+                          }
+                          List<User> temp = await UserTable().fetchAll();
+                          debugPrint(temp.toString());
+                        }
+                      },
                       child: const Text(
-                        "Sign In",
+                        "Sign Up",
                         style: TextStyle(
                           fontFamily: "DMSans",
                           fontWeight: FontWeight.w700,

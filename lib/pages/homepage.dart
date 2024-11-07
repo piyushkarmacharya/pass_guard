@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pass_guard/database/pass_guard_db.dart';
+import 'package:pass_guard/database/credentials_table.dart';
 import 'package:pass_guard/models/credential.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     fetchCredentials();
   }
 
-  void fetchCredentials() async {
+  void fetchCredentials() {
     setState(() {
       futureCredentials = passGuardDb.fetchAll();
     });
