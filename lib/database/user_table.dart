@@ -4,8 +4,7 @@ import 'database_service.dart';
 
 class UserTable {
   final tableName = 'user';
-  Future<void> createTable() async {
-    final database = await DatabaseService().database;
+  Future<void> createTable(Database database) async {
     await database.execute("""CREATE TABLE IF NOT EXISTS $tableName (
         "id" INTEGER NOT NULL,
         
@@ -16,7 +15,6 @@ class UserTable {
   }
 
   Future<int> create({required String email, required String password}) async {
-    createTable();
     final database = await DatabaseService().database;
     return await database.rawInsert(
       '''INSERT INTO $tableName(email,password) VALUES (?,?)''',

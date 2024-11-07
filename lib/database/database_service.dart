@@ -1,4 +1,5 @@
 import 'package:pass_guard/database/credentials_table.dart';
+import 'package:pass_guard/database/user_table.dart';
 import "package:sqflite/sqflite.dart";
 import 'package:path/path.dart';
 
@@ -31,6 +32,7 @@ class DatabaseService {
   }
 
   Future<void> create(Database database, int version) async {
-    return PassGuardDb().createTable(database);
+    UserTable().createTable(database);
+    CredentialsTable().createTable(database);
   }
 }

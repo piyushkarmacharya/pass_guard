@@ -18,17 +18,18 @@ class _HomePageState extends State<HomePage> {
     borderRadius: BorderRadius.all(Radius.circular(10)),
   );
   Future<List<Credential>>? futureCredentials;
-  final passGuardDb = PassGuardDb();
+  final credentialsTable = CredentialsTable();
   @override
   void initState() {
     super.initState();
     fetchCredentials();
   }
 
-  void fetchCredentials() {
+  void fetchCredentials() async {
     setState(() {
-      futureCredentials = passGuardDb.fetchAll();
+      futureCredentials = credentialsTable.fetchAll();
     });
+    debugPrint((await credentialsTable.fetchAll()).toString());
   }
 
   bool _showPassword = false;
@@ -208,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                                                     BorderRadius.circular(10)),
                                             backgroundColor: Colors.blueGrey),
                                         onPressed: () {
-                                          passGuardDb.create(
+                                          credentialsTable.create(
                                               title: titleCtr.text,
                                               email: emailCtr.text,
                                               password: passwordCtr.text);
@@ -329,7 +330,7 @@ class _HomePageState extends State<HomePage> {
                                               TextButton(
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
-                                                    passGuardDb
+                                                    credentialsTable
                                                         .delete(credential.id);
                                                     fetchCredentials();
                                                   },

@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:pass_guard/models/credential.dart';
 import 'database_service.dart';
 
-class PassGuardDb {
+class CredentialsTable {
   final tableName = 'credentials';
   Future<void> createTable(Database database) async {
     await database.execute("""CREATE TABLE IF NOT EXISTS $tableName (
