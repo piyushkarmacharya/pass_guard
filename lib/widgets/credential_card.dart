@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pass_guard/database/credentials_table.dart';
+import 'package:pass_guard/database/user_table.dart';
 import 'package:pass_guard/models/credential.dart';
+import 'package:pass_guard/models/user.dart';
 
 class CredentialCard extends StatefulWidget {
   final Credential cred;
@@ -19,8 +21,14 @@ class CredentialCard extends StatefulWidget {
 }
 
 class _CredentialCardState extends State<CredentialCard> {
+  OutlineInputBorder borderStyle = const OutlineInputBorder(
+    borderSide: BorderSide(
+      color: Colors.transparent,
+    ),
+    borderRadius: BorderRadius.all(Radius.circular(10)),
+  );
   bool _showPassword = false;
-
+  final TextEditingController passwordCtr = TextEditingController();
   //for biometrics
   final LocalAuthentication auth = LocalAuthentication();
   _SupportState _supportState = _SupportState.unknown;
@@ -80,34 +88,128 @@ class _CredentialCardState extends State<CredentialCard> {
 
   //Authenticate with biometrics , face , and pin of device
   Future<bool> _authenticate() async {
-    bool authenticated = false;
-    try {
-      setState(() {
-        _authorized = 'Authenticating';
-      });
-      authenticated = await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
-        options: const AuthenticationOptions(
-          stickyAuth: false,
-        ),
-      );
-    } on PlatformException catch (e) {
-      debugPrint(e.toString());
-      setState(() {
-        _authorized = 'Error - ${e.message}';
-      });
-      return false;
-    }
-    if (!mounted) {
-      return false;
-    }
+    if (_supportState == _SupportState.supported &&
+        _canCheckBiometrics == true &&
+        _availableBiometrics != null &&
+        _availableBiometrics!.isNotEmpty) {
+      bool authenticated = false;
+      try {
+        setState(() {
+          _authorized = 'Authenticating';
+        });
+        authenticated = await auth.authenticate(
+          localizedReason: 'Let OS determine authentication method',
+          options: const AuthenticationOptions(
+            stickyAuth: false,
+          ),
+        );
+      } on PlatformException catch (e) {
+        debugPrint(e.toString());
+        setState(() {
+          _authorized = 'Error - ${e.message}';
+        });
+        return false;
+      }
+      if (!mounted) {
+        return false;
+      }
 
-    setState(
-        () => _authorized = authenticated ? 'Authorized' : 'Not Authorized');
-    if (_authorized == "Authorized") {
-      return true;
+      setState(
+          () => _authorized = authenticated ? 'Authorized' : 'Not Authorized');
+      if (_authorized == "Authorized") {
+        return true;
+      }
+      return false;
+    } else {
+      bool? temp = await showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              backgroundColor: Colors.grey,
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      "Enter password below :",
+                      style: TextStyle(
+                          color: Color(0xFF161719),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          height: 28 / 18),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    TextField(
+                      controller: passwordCtr,
+                      obscureText: !_showPassword,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _showPassword = !_showPassword;
+                            });
+                          },
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            size: 20,
+                          ),
+                        ),
+                        enabledBorder: borderStyle,
+                        focusedBorder: borderStyle,
+                        border: borderStyle,
+                        prefixIcon: const Icon(
+                          Icons.lock_outline,
+                          size: 20,
+                          color: Colors.black,
+                        ),
+                        label: const Text(
+                          "Password",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "DMSans",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              height: 18.23 / 14),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              backgroundColor: Colors.blueGrey),
+                          onPressed: () async {
+                            List<User> users = await UserTable().fetchAll();
+                            if (passwordCtr.text ==
+                                users[users.length - 1].password) {
+                              Navigator.of(context).pop(true);
+                            } else {
+                              Navigator.of(context).pop(false);
+                              showMessage("Incorrect password");
+                            }
+                          },
+                          child: const Text(
+                            "Show credentials",
+                            style: TextStyle(color: Colors.black),
+                          )),
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
+      return temp ?? false;
     }
-    return false;
   }
 
   // Future<void> _authenticateWithBiometrics() async {
