@@ -3,22 +3,22 @@ import 'dart:convert';
 
 class User {
   final int id;
-  final String email;
+  final String username;
   final String password;
   User({
     required this.id,
-    required this.email,
+    required this.username,
     required this.password,
   });
 
   User copyWith({
     int? id,
-    String? email,
+    String? username,
     String? password,
   }) {
     return User(
       id: id ?? this.id,
-      email: email ?? this.email,
+      username: username ?? this.username,
       password: password ?? this.password,
     );
   }
@@ -26,7 +26,7 @@ class User {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'email': email,
+      'username': username,
       'password': password,
     };
   }
@@ -34,7 +34,7 @@ class User {
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       id: map['id'] as int,
-      email: map['email'] as String,
+      username: map['username'] as String,
       password: map['password'] as String,
     );
   }
@@ -45,20 +45,23 @@ class User {
       User.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'User(id: $id, email: $email, password: $password)';
+  String toString() =>
+      'User(id: $id, username: $username, password: $password)';
 
   @override
   bool operator ==(covariant User other) {
     if (identical(this, other)) return true;
 
-    return other.id == id && other.email == email && other.password == password;
+    return other.id == id &&
+        other.username == username &&
+        other.password == password;
   }
 
   @override
-  int get hashCode => id.hashCode ^ email.hashCode ^ password.hashCode;
+  int get hashCode => id.hashCode ^ username.hashCode ^ password.hashCode;
 
   factory User.fromSqfliteDatabase(Map<String, dynamic> map) => User(
       id: map['id']?.toInt() ?? 0,
-      email: map['email'] ?? '',
+      username: map['username'] ?? '',
       password: map['password'] ?? '');
 }

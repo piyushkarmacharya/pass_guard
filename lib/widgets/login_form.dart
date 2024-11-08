@@ -14,7 +14,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController emailCtr = TextEditingController();
+  final TextEditingController usernameCtr = TextEditingController();
   final TextEditingController passwordCtr = TextEditingController();
   OutlineInputBorder borderStyle = const OutlineInputBorder(
     borderSide: BorderSide(
@@ -178,14 +178,10 @@ class _LoginFormState extends State<LoginForm> {
             height: 0.03 * screenSize.height,
           ),
           TextFormField(
-            controller: emailCtr,
+            controller: usernameCtr,
             validator: (value) {
-              RegExp emailRegExp =
-                  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
               if (value == null || value.isEmpty) {
-                return "Enter email";
-              } else if (!emailRegExp.hasMatch(value)) {
-                return "Enter valid email";
+                return "Enter username";
               }
               return null;
             },
@@ -196,12 +192,12 @@ class _LoginFormState extends State<LoginForm> {
               filled: true,
               fillColor: const Color(0xFFFFFFFF),
               prefixIcon: const Icon(
-                Icons.mail_outline,
+                Icons.account_circle,
                 size: 20,
                 color: Colors.blueGrey,
               ),
               label: const Text(
-                "Email",
+                "Username",
                 style: TextStyle(
                     color: Color(0xFFABA8B1),
                     fontFamily: "DMSans",
@@ -269,7 +265,7 @@ class _LoginFormState extends State<LoginForm> {
                           });
                           List<User> users = await UserTable().fetchAll();
                           User user = users[users.length - 1];
-                          if (emailCtr.text == user.email &&
+                          if (usernameCtr.text == user.username &&
                               passwordCtr.text == user.password) {
                             setState(() {
                               loading = false;
@@ -277,7 +273,7 @@ class _LoginFormState extends State<LoginForm> {
                             Navigator.of(context)
                                 .pushReplacementNamed(HomePage.routeName);
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text("Welcome ${emailCtr.text}")));
+                                content: Text("Welcome ${usernameCtr.text}")));
                           } else {
                             setState(() {
                               loading = false;

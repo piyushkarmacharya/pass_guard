@@ -8,17 +8,18 @@ class UserTable {
     await database.execute("""CREATE TABLE IF NOT EXISTS $tableName (
         "id" INTEGER NOT NULL,
         
-        "email" TEXT NOT NULL,
+        "username" TEXT NOT NULL,
         "password" TEXT NOT NULL,
         PRIMARY KEY("id" AUTOINCREMENT)
         );""");
   }
 
-  Future<int> create({required String email, required String password}) async {
+  Future<int> create(
+      {required String username, required String password}) async {
     final database = await DatabaseService().database;
     return await database.rawInsert(
-      '''INSERT INTO $tableName(email,password) VALUES (?,?)''',
-      [email, password],
+      '''INSERT INTO $tableName(username,password) VALUES (?,?)''',
+      [username, password],
     );
   }
 

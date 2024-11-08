@@ -13,7 +13,7 @@ class SignupForm extends StatefulWidget {
 
 class _SignupFormState extends State<SignupForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController emailCtr = TextEditingController();
+  final TextEditingController usernamectr = TextEditingController();
   final TextEditingController passwordCtr = TextEditingController();
   OutlineInputBorder borderStyle = const OutlineInputBorder(
     borderSide: BorderSide(
@@ -24,7 +24,7 @@ class _SignupFormState extends State<SignupForm> {
 
   Future<int> signup() async {
     int temp = await UserTable()
-        .create(email: emailCtr.text, password: passwordCtr.text);
+        .create(username: usernamectr.text, password: passwordCtr.text);
     return temp;
   }
 
@@ -54,14 +54,12 @@ class _SignupFormState extends State<SignupForm> {
             height: 0.03 * screenSize.height,
           ),
           TextFormField(
-            controller: emailCtr,
+            controller: usernamectr,
             validator: (value) {
-              RegExp emailRegExp =
-                  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
               if (value == null || value.isEmpty) {
-                return "Enter email";
-              } else if (!emailRegExp.hasMatch(value)) {
-                return "Enter valid email";
+                return "Enter username";
+              } else if (value.length < 6) {
+                return "Enter valid email with atleast 6 character";
               }
               return null;
             },
@@ -72,12 +70,12 @@ class _SignupFormState extends State<SignupForm> {
               filled: true,
               fillColor: const Color(0xFFFFFFFF),
               prefixIcon: const Icon(
-                Icons.mail_outline,
+                Icons.account_circle,
                 size: 20,
                 color: Colors.blueGrey,
               ),
               label: const Text(
-                "Email",
+                "Username",
                 style: TextStyle(
                     color: Color(0xFFABA8B1),
                     fontFamily: "DMSans",

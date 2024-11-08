@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pass_guard/database/credentials_table.dart';
+import 'package:pass_guard/database/user_table.dart';
 import 'package:pass_guard/models/credential.dart';
+import 'package:pass_guard/models/user.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home-page";
@@ -19,10 +21,12 @@ class _HomePageState extends State<HomePage> {
   );
   Future<List<Credential>>? futureCredentials;
   final credentialsTable = CredentialsTable();
+  String username = " ";
   @override
   void initState() {
     super.initState();
     fetchCredentials();
+    fetchUsername();
   }
 
   void fetchCredentials() async {
@@ -30,6 +34,13 @@ class _HomePageState extends State<HomePage> {
       futureCredentials = credentialsTable.fetchAll();
     });
     debugPrint((await credentialsTable.fetchAll()).toString());
+  }
+
+  Future<void> fetchUsername() async {
+    List<User> usr = await UserTable().fetchAll();
+    setState(() {
+      username = usr[usr.length - 1].username;
+    });
   }
 
   bool _showPassword = false;
@@ -60,10 +71,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 width: 24,
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Welcome back",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -73,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white),
                   ),
                   Text(
-                    "User",
+                    username,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontFamily: "DMSans",
