@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.black,
                                       ),
                                       label: const Text(
-                                        "Email",
+                                        "Email or username",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontFamily: "DMSans",

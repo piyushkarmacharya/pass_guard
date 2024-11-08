@@ -332,6 +332,15 @@ class _LoginFormState extends State<LoginForm> {
               ],
             ),
           ),
+          if (_canCheckBiometrics == true && _availableBiometrics!.isEmpty)
+            Text(
+              "Biometrics supported, but not set up or enabled on the device.",
+              style: TextStyle(
+                color: Colors.red.shade900, // Default error color
+                fontSize: 12.0, // Standard size for error text
+                fontWeight: FontWeight.w400, // Regular weight for error text
+              ),
+            ),
         ],
       ),
     );
