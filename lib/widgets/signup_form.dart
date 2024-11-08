@@ -22,6 +22,10 @@ class _SignupFormState extends State<SignupForm> {
     borderRadius: BorderRadius.all(Radius.circular(10)),
   );
 
+  void showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
   Future<int> signup() async {
     int temp = await UserTable()
         .create(username: usernamectr.text, password: passwordCtr.text);
@@ -184,16 +188,12 @@ class _SignupFormState extends State<SignupForm> {
                             await SecureStorage().store("signup", "done");
                             widget.onSignup();
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Signup successful")));
+                            showMessage("Signup successful");
                           } else {
                             setState(() {
                               loading = false;
                             });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Try again later")));
+                            showMessage("Try again later");
                           }
                           List<User> temp = await UserTable().fetchAll();
                           debugPrint(temp.toString());

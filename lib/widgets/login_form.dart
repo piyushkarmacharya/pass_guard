@@ -25,12 +25,19 @@ class _LoginFormState extends State<LoginForm> {
 
   bool loading = false;
 
+  void loginSuccess() {
+    Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+  }
+
   //for biometrics
   final LocalAuthentication auth = LocalAuthentication();
   _SupportState _supportState = _SupportState.unknown;
   bool? _canCheckBiometrics;
   List<BiometricType>? _availableBiometrics;
   String _authorized = 'Not Authorized';
+  void showMessage(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
 
   @override
   void initState() {
@@ -270,17 +277,14 @@ class _LoginFormState extends State<LoginForm> {
                             setState(() {
                               loading = false;
                             });
-                            Navigator.of(context)
-                                .pushReplacementNamed(HomePage.routeName);
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text("Welcome ${usernameCtr.text}")));
+
+                            showMessage("Welcome ${usernameCtr.text}");
+                            loginSuccess();
                           } else {
                             setState(() {
                               loading = false;
                             });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Invalid credentials")));
+                            showMessage("Invalid credentials");
                           }
                         }
                       },

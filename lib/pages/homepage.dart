@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     username,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontFamily: "DMSans",
                         fontWeight: FontWeight.w700,
                         fontSize: 16,
