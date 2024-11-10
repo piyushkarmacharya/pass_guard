@@ -64,8 +64,7 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: 40,
                   width: 40,
-                  child: Image.network(
-                      ("https://media.istockphoto.com/id/1196083861/vector/simple-man-head-icon-set.jpg?s=612x612&w=0&k=20&c=a8fwdX6UKUVCOedN_p0pPszu8B4f6sjarDmUGHngvdM=")),
+                  child: Image.asset("assets/images/user.png"),
                 ),
               ),
               const SizedBox(

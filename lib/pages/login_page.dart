@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               SizedBox(
                 height: keyboardActive == 0.0
-                    ? 0.15 * screenSize.height
+                    ? 0.17 * screenSize.height
                     : 0.07 * screenSize.height,
               ),
               SizedBox(
@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: 0.5 * screenSize.width,
                         height: 0.12 * screenSize.height,
                         child: Image.asset(
-                          "assets/images/lock.png",
+                          "assets/images/icon.png",
                         ),
                       ),
                     SizedBox(
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(
                 height: keyboardActive == 0.0
-                    ? 0.1 * screenSize.height
+                    ? 0.04 * screenSize.height
                     : 0.01 * screenSize.height,
               ),
               Expanded(
