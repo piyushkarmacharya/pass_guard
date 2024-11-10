@@ -19,12 +19,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         appBarTheme: AppBarTheme(
             backgroundColor: Colors.blueGrey.shade700,
-            iconTheme: IconThemeData(
+            iconTheme: const IconThemeData(
               color: Color(0xFFFFFFFF),
             ),
             toolbarHeight: 70,
-            titleTextStyle:
-                TextStyle(color: Color(0xFFFFFFFF), fontFamily: "DMSans")),
+            titleTextStyle: const TextStyle(
+                color: Color(0xFFFFFFFF), fontFamily: "DMSans")),
       ),
       initialRoute: LoginPage.routeName,
       routes: {
