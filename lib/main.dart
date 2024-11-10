@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData(
               color: Color(0xFFFFFFFF),
             ),
+            toolbarHeight: 70,
             titleTextStyle:
                 TextStyle(color: Color(0xFFFFFFFF), fontFamily: "DMSans")),
       ),

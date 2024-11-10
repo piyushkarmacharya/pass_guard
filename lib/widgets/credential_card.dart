@@ -128,7 +128,7 @@ class _CredentialCardState extends State<CredentialCard> {
           builder: (context) {
             return StatefulBuilder(builder: (context, setState) {
               return Dialog(
-                backgroundColor: Colors.grey,
+                backgroundColor: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Column(
@@ -265,16 +265,16 @@ class _CredentialCardState extends State<CredentialCard> {
     final credential = widget.cred;
     final credentialsTable = widget.credentialsTable;
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 0),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        color: Colors.grey,
+        color: Colors.white70,
         elevation: 10,
         child: Row(
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
+                padding: const EdgeInsets.fromLTRB(20, 8, 0, 4),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -282,28 +282,27 @@ class _CredentialCardState extends State<CredentialCard> {
                       child: Text(
                         credential.title,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     Text(
                       'Email : ${credential.email}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black.withOpacity(0.7)),
                     ),
-                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Text(
                           'Password : ${_showPassword ? credential.password : "**********"}',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black.withOpacity(0.7)),
                         ),
                         IconButton(
                           onPressed: () async {
@@ -321,7 +320,7 @@ class _CredentialCardState extends State<CredentialCard> {
                             _showPassword
                                 ? Icons.visibility
                                 : Icons.visibility_off,
-                            size: 20,
+                            size: 18,
                           ),
                         ),
                       ],

@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white70,
         appBar: AppBar(
           titleSpacing: 0,
           title: Row(
@@ -241,31 +242,34 @@ class _HomePageState extends State<HomePage> {
                 icon: const Icon(Icons.add, size: 20))
           ],
         ),
-        body: FutureBuilder<List<Credential>>(
-          future: futureCredentials,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator(); // Show loading indicator
-            } else if (snapshot.hasError) {
-              return Center(
-                  child:
-                      Text("Error: ${snapshot.error}")); // Show error message
-            } else if (snapshot.hasData) {
-              final credentials = snapshot.data!;
-              return ListView.builder(
-                itemCount: credentials.length,
-                itemBuilder: (context, index) {
-                  final credential = credentials[index];
-                  return CredentialCard(
-                      cred: credential,
-                      credentialsTable: credentialsTable,
-                      onDelete: fetchCredentials);
-                },
-              );
-            } else {
-              return const Text("No credentials found.");
-            }
-          },
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+          child: FutureBuilder<List<Credential>>(
+            future: futureCredentials,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator(); // Show loading indicator
+              } else if (snapshot.hasError) {
+                return Center(
+                    child:
+                        Text("Error: ${snapshot.error}")); // Show error message
+              } else if (snapshot.hasData) {
+                final credentials = snapshot.data!;
+                return ListView.builder(
+                  itemCount: credentials.length,
+                  itemBuilder: (context, index) {
+                    final credential = credentials[index];
+                    return CredentialCard(
+                        cred: credential,
+                        credentialsTable: credentialsTable,
+                        onDelete: fetchCredentials);
+                  },
+                );
+              } else {
+                return const Text("No credentials found.");
+              }
+            },
+          ),
         ));
   }
 }
