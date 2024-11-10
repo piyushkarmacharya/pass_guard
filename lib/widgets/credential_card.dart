@@ -41,6 +41,10 @@ class _CredentialCardState extends State<CredentialCard> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
+  void _popDialog(bool value) {
+    Navigator.of(context).pop(value);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -195,9 +199,9 @@ class _CredentialCardState extends State<CredentialCard> {
                               List<User> users = await UserTable().fetchAll();
                               if (passwordCtr.text ==
                                   users[users.length - 1].password) {
-                                Navigator.of(context).pop(true);
+                                _popDialog(true);
                               } else {
-                                Navigator.of(context).pop(false);
+                                _popDialog(false);
                                 showMessage("Incorrect password");
                               }
                             },
