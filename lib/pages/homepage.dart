@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController emailCtr = TextEditingController();
   TextEditingController passwordCtr = TextEditingController();
   TextEditingController titleCtr = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -108,132 +109,154 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: Colors.grey.shade300,
                             child: Padding(
                               padding: const EdgeInsets.all(32.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text(
-                                    "Enter Credentials Below :",
-                                    style: TextStyle(
-                                        color: Color(0xFF161719),
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        height: 28 / 18),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  TextField(
-                                    controller: titleCtr,
-                                    decoration: InputDecoration(
-                                      enabledBorder: borderStyle,
-                                      focusedBorder: borderStyle,
-                                      border: borderStyle,
-                                      prefixIcon: const Icon(
-                                        Icons.title,
-                                        size: 20,
-                                        color: Colors.black,
-                                      ),
-                                      label: const Text(
-                                        "Title",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "DMSans",
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            height: 18.23 / 14),
-                                      ),
+                              child: Form(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                key: _formKey,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      "Enter Credentials Below :",
+                                      style: TextStyle(
+                                          color: Color(0xFF161719),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          height: 28 / 18),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  TextField(
-                                    controller: emailCtr,
-                                    decoration: InputDecoration(
-                                      enabledBorder: borderStyle,
-                                      focusedBorder: borderStyle,
-                                      border: borderStyle,
-                                      prefixIcon: const Icon(
-                                        Icons.mail_outline,
-                                        size: 20,
-                                        color: Colors.black,
-                                      ),
-                                      label: const Text(
-                                        "Email or username",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "DMSans",
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            height: 18.23 / 14),
-                                      ),
+                                    const SizedBox(
+                                      height: 12,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  TextField(
-                                    controller: passwordCtr,
-                                    obscureText: !_showPassword,
-                                    decoration: InputDecoration(
-                                      suffixIcon: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            _showPassword = !_showPassword;
-                                          });
-                                        },
-                                        icon: Icon(
-                                          _showPassword
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
+                                    TextFormField(
+                                      controller: titleCtr,
+                                      decoration: InputDecoration(
+                                        enabledBorder: borderStyle,
+                                        focusedBorder: borderStyle,
+                                        border: borderStyle,
+                                        prefixIcon: const Icon(
+                                          Icons.title,
                                           size: 20,
+                                          color: Colors.black,
+                                        ),
+                                        label: const Text(
+                                          "Title",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: "DMSans",
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14,
+                                              height: 18.23 / 14),
                                         ),
                                       ),
-                                      enabledBorder: borderStyle,
-                                      focusedBorder: borderStyle,
-                                      border: borderStyle,
-                                      prefixIcon: const Icon(
-                                        Icons.lock_outline,
-                                        size: 20,
-                                        color: Colors.black,
-                                      ),
-                                      label: const Text(
-                                        "Password",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "DMSans",
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                            height: 18.23 / 14),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    TextFormField(
+                                      controller: emailCtr,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Enter the email";
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                        enabledBorder: borderStyle,
+                                        focusedBorder: borderStyle,
+                                        border: borderStyle,
+                                        prefixIcon: const Icon(
+                                          Icons.mail_outline,
+                                          size: 20,
+                                          color: Colors.black,
+                                        ),
+                                        label: const Text(
+                                          "Email or username",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: "DMSans",
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14,
+                                              height: 18.23 / 14),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            backgroundColor:
-                                                Colors.blueGrey.shade700),
-                                        onPressed: () {
-                                          credentialsTable.create(
-                                              title: titleCtr.text,
-                                              email: emailCtr.text,
-                                              password: passwordCtr.text);
-                                          Navigator.of(context).pop();
-                                          fetchCredentials();
-                                        },
-                                        child: const Text(
-                                          "Save",
-                                          style: TextStyle(color: Colors.white),
-                                        )),
-                                  )
-                                ],
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    TextFormField(
+                                      controller: passwordCtr,
+                                      obscureText: !_showPassword,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Enter the password";
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _showPassword = !_showPassword;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            _showPassword
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                            size: 20,
+                                          ),
+                                        ),
+                                        enabledBorder: borderStyle,
+                                        focusedBorder: borderStyle,
+                                        border: borderStyle,
+                                        prefixIcon: const Icon(
+                                          Icons.lock_outline,
+                                          size: 20,
+                                          color: Colors.black,
+                                        ),
+                                        label: const Text(
+                                          "Password",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: "DMSans",
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14,
+                                              height: 18.23 / 14),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              backgroundColor:
+                                                  Colors.blueGrey.shade700),
+                                          onPressed: () {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              credentialsTable.create(
+                                                  title: titleCtr.text,
+                                                  email: emailCtr.text,
+                                                  password: passwordCtr.text);
+                                              Navigator.of(context).pop();
+                                              fetchCredentials();
+                                            }
+                                          },
+                                          child: const Text(
+                                            "Save",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -256,16 +279,24 @@ class _HomePageState extends State<HomePage> {
                         Text("Error: ${snapshot.error}")); // Show error message
               } else if (snapshot.hasData) {
                 final credentials = snapshot.data!;
-                return ListView.builder(
-                  itemCount: credentials.length,
-                  itemBuilder: (context, index) {
-                    final credential = credentials[index];
-                    return CredentialCard(
-                        cred: credential,
-                        credentialsTable: credentialsTable,
-                        onDelete: fetchCredentials);
-                  },
-                );
+
+                return credentials.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: credentials.length,
+                        itemBuilder: (context, index) {
+                          final credential = credentials[index];
+                          return CredentialCard(
+                              cred: credential,
+                              credentialsTable: credentialsTable,
+                              onDelete: fetchCredentials);
+                        },
+                      )
+                    : const Center(
+                        child: Text(
+                        "-- Currently you don't have stored any credentials --",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                      ));
               } else {
                 return const Text("No credentials found.");
               }
