@@ -268,7 +268,7 @@ class _CredentialCardState extends State<CredentialCard> {
       padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 0),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        color: Colors.white70,
+        color: Colors.grey.shade300,
         elevation: 10,
         child: Row(
           children: [
@@ -340,7 +340,7 @@ class _CredentialCardState extends State<CredentialCard> {
                             return AlertDialog(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16)),
-                              backgroundColor: Colors.grey,
+                              backgroundColor: Colors.grey.shade300,
                               title: Text(
                                   "Delete credentials for ${credential.title}?",
                                   style: const TextStyle(

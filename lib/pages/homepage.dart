@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                       builder: (context) {
                         return StatefulBuilder(builder: (context, setState) {
                           return Dialog(
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Colors.grey.shade300,
                             child: Padding(
                               padding: const EdgeInsets.all(32.0),
                               child: Column(
@@ -218,7 +218,8 @@ class _HomePageState extends State<HomePage> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
-                                            backgroundColor: Colors.blueGrey),
+                                            backgroundColor:
+                                                Colors.blueGrey.shade700),
                                         onPressed: () {
                                           credentialsTable.create(
                                               title: titleCtr.text,
@@ -229,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                                         },
                                         child: const Text(
                                           "Save",
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.white),
                                         )),
                                   )
                                 ],
