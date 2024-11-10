@@ -35,6 +35,13 @@ class _SignupFormState extends State<SignupForm> {
   bool loading = false;
 
   @override
+  void dispose() {
+    usernamectr.dispose();
+    passwordCtr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final screenSize = mediaQuery.size;

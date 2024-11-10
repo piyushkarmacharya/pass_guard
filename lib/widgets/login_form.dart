@@ -159,6 +159,12 @@ class _LoginFormState extends State<LoginForm> {
   //   await auth.stopAuthentication();
   //   setState(() => _isAuthenticating = false);
   // }
+  @override
+  void dispose() {
+    usernameCtr.dispose();
+    passwordCtr.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -51,6 +51,14 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    emailCtr.dispose();
+    passwordCtr.dispose();
+    titleCtr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white70,
@@ -247,6 +255,9 @@ class _HomePageState extends State<HomePage> {
                                                   password: passwordCtr.text);
                                               Navigator.of(context).pop();
                                               fetchCredentials();
+                                              titleCtr.clear();
+                                              passwordCtr.clear();
+                                              emailCtr.clear();
                                             }
                                           },
                                           child: const Text(
