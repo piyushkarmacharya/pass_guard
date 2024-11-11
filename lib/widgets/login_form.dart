@@ -166,6 +166,8 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
+  bool _showPassword = false;
+
   @override
   Widget build(BuildContext context) {
     debugPrint(
@@ -173,7 +175,7 @@ class _LoginFormState extends State<LoginForm> {
     final mediaQuery = MediaQuery.of(context);
     final screenSize = mediaQuery.size;
     return Form(
-      autovalidateMode: AutovalidateMode.always,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(
         children: [
@@ -225,7 +227,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           TextFormField(
             controller: passwordCtr,
-            obscureText: true,
+            obscureText: !_showPassword,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Enter password";
@@ -235,6 +237,15 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _showPassword = !_showPassword;
+                    });
+                  },
+                  icon: Icon(
+                      size: 20,
+                      _showPassword ? Icons.visibility : Icons.visibility_off)),
               enabledBorder: borderStyle,
               focusedBorder: borderStyle,
               border: borderStyle,

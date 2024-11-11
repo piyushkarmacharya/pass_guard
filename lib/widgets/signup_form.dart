@@ -15,6 +15,8 @@ class _SignupFormState extends State<SignupForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController usernamectr = TextEditingController();
   final TextEditingController passwordCtr = TextEditingController();
+  bool _showPassword = false;
+  bool _showConfirmPassword = false;
   OutlineInputBorder borderStyle = const OutlineInputBorder(
     borderSide: BorderSide(
       color: Colors.transparent,
@@ -47,7 +49,7 @@ class _SignupFormState extends State<SignupForm> {
     final screenSize = mediaQuery.size;
 
     return Form(
-      autovalidateMode: AutovalidateMode.always,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(
         children: [
@@ -101,7 +103,7 @@ class _SignupFormState extends State<SignupForm> {
           ),
           TextFormField(
             controller: passwordCtr,
-            obscureText: true,
+            obscureText: !_showPassword,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Enter password";
@@ -111,6 +113,15 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                  iconSize: 20,
+                  onPressed: () {
+                    setState(() {
+                      _showPassword = !_showPassword;
+                    });
+                  },
+                  icon: Icon(
+                      _showPassword ? Icons.visibility : Icons.visibility_off)),
               enabledBorder: borderStyle,
               focusedBorder: borderStyle,
               border: borderStyle,
@@ -122,7 +133,7 @@ class _SignupFormState extends State<SignupForm> {
                 color: Colors.blueGrey,
               ),
               label: const Text(
-                "Confirm Password",
+                "Password",
                 style: TextStyle(
                     color: Color(0xFFABA8B1),
                     fontFamily: "DMSans",
@@ -136,7 +147,7 @@ class _SignupFormState extends State<SignupForm> {
             height: 0.015 * screenSize.height,
           ),
           TextFormField(
-            obscureText: true,
+            obscureText: !_showConfirmPassword,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Confirm the password";
@@ -146,6 +157,16 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                  iconSize: 20,
+                  onPressed: () {
+                    setState(() {
+                      _showConfirmPassword = !_showConfirmPassword;
+                    });
+                  },
+                  icon: Icon(_showConfirmPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off)),
               enabledBorder: borderStyle,
               focusedBorder: borderStyle,
               border: borderStyle,
